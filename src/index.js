@@ -1,65 +1,89 @@
-'use strict';
+const coursesEn = [
+  "Hamburger, cream sauce and poiled potates",
+  "Goan style fish curry and whole grain rice",
+  "Vegan Chili sin carne and whole grain rice",
+  "Broccoli puree soup, side salad with two napas",
+  "Lunch baguette with BBQ-turkey filling",
+  "Cheese / Chicken / Vege / Halloum burger and french fries",
+];
+const coursesFi = [
+  "Jauhelihapihvi, ruskeaa kermakastiketta ja keitettyä perunaa",
+  "Goalaista kalacurrya ja täysjyväriisiä",
+  "vegaani Chili sin carne ja täysjyväriisi",
+  "Parsakeittoa,lisäkesalaatti kahdella napaksella",
+  "Lunch baguette with BBQ-turkey filling",
+  "Juusto / Kana / Kasvis / Halloumi burgeri ja ranskalaiset",
+];
 
-const guesses = 10;
-const answerMinimumValue = 0;
-const answerMaximumValue = 100;
+const menu = document.querySelector('#menu');
 
-const createAnswer = (min, max) => {
-  return min + Math.floor(Math.random() * (max - min + 1));
+const clearMenuList = (parent) => {
+  while (parent.firstChild) {
+    parent.removeChild(parent.lastChild);
+  }
 };
 
-const answer = createAnswer(answerMinimumValue, answerMaximumValue);
+const writeMenuList = (items, parent) => {
+  clearMenuList(parent);
 
-const title = document.querySelector('h1');
-title.innerHTML += ' (' + answerMinimumValue + '&ndash;' + answerMaximumValue + ')';
+  for (const item of items) {
+    const menuItem = document.createElement('li');
+    menuItem.textContent = item;
+    parent.appendChild(menuItem);
+  }
+};
 
-const guessInput = document.querySelector('#guess');
-guessInput.max = answerMaximumValue;
-guessInput.min = answerMinimumValue;
+writeMenuList(coursesEn, menu);
 
-const guessButton = document.querySelector('#submitGuess');
-const previousGuesses = document.querySelector('#previousGuesses');
-const result = document.querySelector('#result');
+const changeLanguage = document.querySelector('#changeLanguage');
+let currentLanguage = 'en';
 
-let guessNumber = 1;
-let startTime;
+changeLanguage.addEventListener('click', () => {
+  if (currentLanguage === 'fi') {
+    currentLanguage = 'en';
+    writeMenuList(coursesEn, menu);
+  } else if (currentLanguage === 'en') {
+    currentLanguage = 'fi';
+    writeMenuList(coursesFi, menu);
+  }
+});
 
-const hint = (guess, answer) => {
-  if (guess < answer) {
-    return 'The answer is higher than ' + guess + '.';
+const sortMenu = (menu, asc) => {
+  if(asc) {
+    return menu.sort((a, b) => {
+      return a.localeCompare(b);
+    });
   } else {
-    return 'The answer is lower than ' + guess + '.';
+    return menu.sort((a, b) => {
+      return b.localeCompare(a);
+    });
   }
 };
 
-const checkGuess = (guess, answer) => {
-  guessInput.value = '';
+const sort = document.querySelector('#sort');
+let asc = true;
 
-  if (guessNumber <= guesses) {
-    if (guess === answer) {
-      const time = Math.round((Date.now() - startTime) / 1000);
-      result.innerHTML = '<span id="correct">Correct answer!</span> Time: ' + time + ' s. Tries: ' + guessNumber + '.';
-      guessButton.disabled = true;
-      const newGame = document.createElement('button');
-      newGame.textContent = 'Play again';
-      document.querySelector('#info').appendChild(newGame);
-      newGame.addEventListener('click', () => {
-        location.reload();
-      });
-    } else {
-      result.innerHTML = '<span id="wrong">Wrong answer!</span> ' + hint(guess, answer);
-      previousGuesses.textContent += ' ' + guess;
-      guessNumber++;
-    }
-  } else {
-    result.innerHTML = '<span id="wrong">Out of turns!</span> You have used all your guesses!';
-    guessButton.disabled = true;
+const getCurrentMenu = (menu) => {
+  const array = [];
+  for (childNode of menu.childNodes) {
+    array.push(childNode.textContent);
   }
+  return array;
 };
 
-guessButton.addEventListener('click', () => {
-  if (guessNumber === 1) {
-    startTime = Date.now();
-  }
-  checkGuess(Number(guessInput.value), answer);
+sort.addEventListener('click', () => {
+  writeMenuList(sortMenu(getCurrentMenu(menu), asc), menu);
+  asc = asc ? false : true;
+});
+
+const random = document.querySelector('#getRandom');
+
+const getRandomItem = (menu) => {
+  const index = Math.floor(Math.random() * menu.childNodes.length);
+  const randomItem = menu.childNodes[index];
+  return randomItem.textContent;
+};
+
+random.addEventListener('click', () => {
+  document.querySelector('#random').innerHTML = '<strong>Your random dish:</strong><br>' + getRandomItem(menu);
 });

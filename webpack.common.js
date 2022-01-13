@@ -19,7 +19,7 @@ module.exports = {
       },
     ]}),
     new HtmlWebpackPlugin({
-      title: 'Number Guessing Game',
+      title: 'Menu',
       meta: {
         viewport: 'width=device-width, initial-scale=1.0'
       },

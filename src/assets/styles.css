@@ -4,45 +4,64 @@ body {
   margin: 5%;
 }
 
+h1 {
+  font-size: 3em;
+  line-height: 1;
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+}
+
 main {
   max-width: 30em;
   margin: 0 auto;
-  border: 1px solid #eee;
-  border-radius: 1.5em;
-  padding: 1.5em;
-}
-
-h1 {
-  font-size: 1em;
-  margin: 0;
 }
 
 p {
-  margin: 1.5em 0;
+  margin: 0;
 }
 
-input,
+#controls {
+  text-align: center;
+  margin: 3em 0;
+}
+
 button {
   font-family: inherit;
   font-size: inherit;
-  line-height: inherit;
-}
-
-#result span {
-  margin: 0.5rem 1rem 0.5rem 0;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  color: #fff;
+  line-height: 1;
+  padding: 0.5em;
+  border: 1px solid #000;
+  background: #fff;
+  color: #000;
   font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.75em;
+  border-radius: 0.25em;
 }
 
-#correct {
-  background: #090;
+button + button {
+  margin-left: 1em;
 }
 
-#wrong {
-  background: #900;
+button:hover {
+  cursor: pointer;
+  background: #eee;
+}
+
+ul {
+  margin: -0.25em 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 0.25em solid #000;
+}
+
+ul li {
+  border-bottom: 1px solid #000;
+  margin: 0 0 -1px;
+  padding: 0.75em 0;
+}
+
+#random {
+  margin: 3em 0 0;
 }

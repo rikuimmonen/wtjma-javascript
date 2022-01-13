@@ -6,21 +6,20 @@
     <link rel="stylesheet" href="assets/styles.css" />
   </head>
   <body>
+    <header>
+      <h1>Menu</h1>
+    </header>
+
     <main>
-      <h1>Guess the number</h1>
+      <p id="controls">
+        <button id="changeLanguage">Change language</button>
+        <button id="sort">Sort</button>
+        <button id="getRandom">Random dish</button>
+      </p>
 
-      <div id="form">
-        <p>
-          <label for="guess">Your guess:</label>
-          <input type="number" step="1" id="guess" />
-          <button id="submitGuess">Submit</button>
-        </p>
-      </div>
+      <ul id="menu"></ul>
 
-      <div id="info">
-        <p id="previousGuesses">Previous guesses:</p>
-        <p id="result"></p>
-      </div>
+      <p id="random"></p>
     </main>
   </body>
 </html>
