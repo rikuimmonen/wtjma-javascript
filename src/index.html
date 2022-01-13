@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <title><%= htmlWebpackPlugin.options.title %></title>
-    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="stylesheet" href="assets/styles.css" />
   </head>
   <body>
-    <p>
-      Hello! Open the developer tools, please.<br />
-      Start by editing the files in <code>src/</code> folder.
-    </p>
+    <main>
+      <h1>Guess the number</h1>
+
+      <div id="form">
+        <p>
+          <label for="guess">Your guess:</label>
+          <input type="number" step="1" id="guess" />
+          <button id="submitGuess">Submit</button>
+        </p>
+      </div>
+
+      <div id="info">
+        <p id="previousGuesses">Previous guesses:</p>
+        <p id="result"></p>
+      </div>
+    </main>
   </body>
 </html>

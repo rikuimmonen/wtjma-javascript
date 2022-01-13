@@ -1,3 +1,48 @@
 body {
-  margin: 10%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.5;
+  margin: 5%;
+}
+
+main {
+  max-width: 30em;
+  margin: 0 auto;
+  border: 1px solid #eee;
+  border-radius: 1.5em;
+  padding: 1.5em;
+}
+
+h1 {
+  font-size: 1em;
+  margin: 0;
+}
+
+p {
+  margin: 1.5em 0;
+}
+
+input,
+button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+#result span {
+  margin: 0.5rem 1rem 0.5rem 0;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.75em;
+}
+
+#correct {
+  background: #090;
+}
+
+#wrong {
+  background: #900;
 }
