@@ -64,4 +64,14 @@ ul li {
 
 #random {
   margin: 3em 0 0;
+  background: #eee;
+  padding: 1.5em;
+}
+
+#random h2 {
+  font-size: 1em;
+  margin: 0 0 1.5em;
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
