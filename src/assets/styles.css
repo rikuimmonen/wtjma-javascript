@@ -7,6 +7,9 @@ body {
 main {
   max-width: 30em;
   margin: 0 auto;
+}
+
+#game {
   border: 1px solid #eee;
   border-radius: 1.5em;
   padding: 1.5em;
@@ -43,6 +46,6 @@ button {
   background: #090;
 }
 
-#wrong {
+#error {
   background: #900;
 }

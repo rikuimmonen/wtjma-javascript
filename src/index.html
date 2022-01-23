@@ -7,19 +7,27 @@
   </head>
   <body>
     <main>
-      <h1>Guess the number</h1>
+      <div id="game">
+        <h1>Guess the number</h1>
 
-      <div id="form">
-        <p>
-          <label for="guess">Your guess:</label>
-          <input type="number" step="1" id="guess" />
-          <button id="submitGuess">Submit</button>
-        </p>
+        <div id="form">
+          <p>
+            <label for="guess">Your guess:</label>
+            <input type="number" step="1" id="guess" />
+            <button id="submitGuess">Submit</button>
+          </p>
+        </div>
+
+        <div id="info">
+          <p id="previousGuesses">Previous guesses:</p>
+          <p id="result"></p>
+        </div>
       </div>
 
-      <div id="info">
-        <p id="previousGuesses">Previous guesses:</p>
-        <p id="result"></p>
+      <div id="bot">
+        <p>
+          <button id="runBot">Run the guessing bot</button>
+        </p>
       </div>
     </main>
   </body>
