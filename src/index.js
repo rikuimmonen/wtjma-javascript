@@ -1,8 +1,22 @@
-import lunchMenuRaw from './menu.json';
+import FazerData from './modules/FazerData';
+import SodexoData from './modules/SodexoData';
 
-const lunchMenu = lunchMenuRaw.courses;
-const menu = document.querySelector('#menu');
-let currentLanguage = 'en';
+import sodexoRaw from './sodexo.json';
+const sodexoMenu = sodexoRaw.courses;
+
+import fazerFiRaw from './fazerFi.json';
+import fazerEnRaw from './fazerEn.json';
+
+const fazerFiMenu = fazerFiRaw.LunchMenus;
+const fazerEnMenu = fazerEnRaw.LunchMenus;
+
+const coursesFi = FazerData.FazerFormat(fazerFiMenu, 0);
+const coursesEn = FazerData.FazerFormat(fazerEnMenu, 0);
+
+/*
+const coursesEn = SodexoData.sodexoFormat(sodexoMenu, 'en');
+const coursesFi = SodexoData.sodexoFormat(sodexoMenu, 'fi');
+*/
 
 const clearMenuList = (parent) => {
   while (parent.firstChild) {
@@ -10,66 +24,57 @@ const clearMenuList = (parent) => {
   }
 };
 
-const writeMenuList = (items, lang, parent) => {
+const writeMenuList = (items, parent) => {
   clearMenuList(parent);
 
-  for (let i = 1; i < Object.keys(items).length + 1; i++) {
-    let title;
-    if (lang === 'en') {
-      title = items[i].title_en;
-    } else if (lang == 'fi') {
-      title = items[i].title_fi;
-    }
-    const properties = items[i].properties;
-    const price = items[i].price;
-    const menuListItem = document.createElement('li');
-    menuListItem.innerHTML =
-      '<strong>' + title + '</strong> (' + properties + ')<br>' + price;
-    parent.appendChild(menuListItem);
+  for (const item of items) {
+    const menuItem = document.createElement('li');
+    menuItem.textContent = item;
+    parent.appendChild(menuItem);
   }
 };
 
-writeMenuList(lunchMenu, currentLanguage, menu);
+writeMenuList(coursesEn, menu);
 
 const changeLanguage = document.querySelector('#changeLanguage');
+let currentLanguage = 'en';
 
 changeLanguage.addEventListener('click', () => {
   if (currentLanguage === 'fi') {
     currentLanguage = 'en';
-    writeMenuList(lunchMenu, currentLanguage, menu);
+    writeMenuList(coursesEn, menu);
   } else if (currentLanguage === 'en') {
     currentLanguage = 'fi';
-    writeMenuList(lunchMenu, currentLanguage, menu);
+    writeMenuList(coursesFi, menu);
   }
 });
 
 const sortMenu = (menu, asc) => {
-  const menuItems = menu.childNodes;
-  const array = [];
-  for (const item of menuItems) {
-    array.push(item.innerHTML);
-  }
-
   if (asc) {
-    array.sort();
+    return menu.sort((a, b) => {
+      return a.localeCompare(b);
+    });
   } else {
-    array.sort((a, b) => b - a);
+    return menu.sort((a, b) => {
+      return b.localeCompare(a);
+    });
   }
-
-  clearMenuList(menu);
-
-  array.forEach((item) => {
-    const menuListItem = document.createElement('li');
-    menuListItem.innerHTML = item;
-    menu.appendChild(menuListItem);
-  });
 };
 
+const sort = document.querySelector('#sort');
 let asc = true;
 
+const getCurrentMenu = (menu) => {
+  const array = [];
+  for (const childNode of menu.childNodes) {
+    array.push(childNode.textContent);
+  }
+  return array;
+};
+
 sort.addEventListener('click', () => {
-  sortMenu(menu, asc);
-  asc = asc ? false : true;
+  writeMenuList(sortMenu(getCurrentMenu(menu), asc), menu);
+  asc = !asc;
 });
 
 const random = document.querySelector('#getRandom');
@@ -77,11 +82,11 @@ const random = document.querySelector('#getRandom');
 const getRandomItem = (menu) => {
   const index = Math.floor(Math.random() * menu.childNodes.length);
   const randomItem = menu.childNodes[index];
-  return randomItem.innerHTML;
+  return randomItem.textContent;
 };
 
 random.addEventListener('click', () => {
-  document.querySelector('#random').innerHTML =
-    '<h2>Your random dish:</h2>' + getRandomItem(menu);
-  document.location = '#random';
+  document.querySelector(
+    '#random').innerHTML = '<strong>Your random dish:</strong><br>' +
+    getRandomItem(menu);
 });
