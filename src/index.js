@@ -1,92 +1,71 @@
-import FazerData from './modules/FazerData';
-import SodexoData from './modules/SodexoData';
+'use strict';
 
-import sodexoRaw from './sodexo.json';
-const sodexoMenu = sodexoRaw.courses;
+// Create a "game cheat code" like secret code feature, activated by typing
+// secret password (record letter key presses in certain sequence). When a user
+// types e.g. "hello", launch a response alert or something like that.
+// (TIP: think about queue data structure)
 
-import fazerFiRaw from './fazerFi.json';
-import fazerEnRaw from './fazerEn.json';
+const code = [
+  'ArrowUp',
+  'ArrowUp',
+  'ArrowDown',
+  'ArrowDown',
+  'ArrowLeft',
+  'ArrowRight',
+  'ArrowLeft',
+  'ArrowRight',
+  'KeyB',
+  'KeyA',
+];
+let current = 0;
 
-const fazerFiMenu = fazerFiRaw.LunchMenus;
-const fazerEnMenu = fazerEnRaw.LunchMenus;
-
-const coursesFi = FazerData.FazerFormat(fazerFiMenu, 0);
-const coursesEn = FazerData.FazerFormat(fazerEnMenu, 0);
-
-/*
-const coursesEn = SodexoData.sodexoFormat(sodexoMenu, 'en');
-const coursesFi = SodexoData.sodexoFormat(sodexoMenu, 'fi');
-*/
-
-const clearMenuList = (parent) => {
-  while (parent.firstChild) {
-    parent.removeChild(parent.lastChild);
-  }
-};
-
-const writeMenuList = (items, parent) => {
-  clearMenuList(parent);
-
-  for (const item of items) {
-    const menuItem = document.createElement('li');
-    menuItem.textContent = item;
-    parent.appendChild(menuItem);
-  }
-};
-
-writeMenuList(coursesEn, menu);
-
-const changeLanguage = document.querySelector('#changeLanguage');
-let currentLanguage = 'en';
-
-changeLanguage.addEventListener('click', () => {
-  if (currentLanguage === 'fi') {
-    currentLanguage = 'en';
-    writeMenuList(coursesEn, menu);
-  } else if (currentLanguage === 'en') {
-    currentLanguage = 'fi';
-    writeMenuList(coursesFi, menu);
-  }
-});
-
-const sortMenu = (menu, asc) => {
-  if (asc) {
-    return menu.sort((a, b) => {
-      return a.localeCompare(b);
-    });
+const cheatCode = (event, code) => {
+  if (event.code === code[current]) {
+    current++;
+    if (current === code.length) {
+      window.alert('Konami code!');
+    }
   } else {
-    return menu.sort((a, b) => {
-      return b.localeCompare(a);
-    });
+    current = 0;
   }
 };
 
-const sort = document.querySelector('#sort');
-let asc = true;
+document.addEventListener('keyup', (event) => {
+  cheatCode(event, code);
+});
 
-const getCurrentMenu = (menu) => {
-  const array = [];
-  for (const childNode of menu.childNodes) {
-    array.push(childNode.textContent);
+// Create a function that shows the x and y coordinates of mouse double-clicks
+// on the page.
+
+const coords = document.querySelector('#coords span');
+
+document.addEventListener('dblclick', function(event) {
+  const x = event.pageX.toString();
+  const y = event.pageY.toString();
+  coords.innerHTML = 'X: ' + x + ', Y: ' + y;
+});
+
+// Create an element that reacts (e.g. console.log something) to touches but not
+// clicks.
+
+const touch = document.querySelector('#touch');
+let touchToggle = false;
+
+touch.addEventListener('touchstart', function() {
+  touchToggle = !touchToggle;
+  if (touchToggle) {
+    touch.style.background = 'red';
+  } else {
+    touch.style.background = 'transparent';
   }
-  return array;
-};
-
-sort.addEventListener('click', () => {
-  writeMenuList(sortMenu(getCurrentMenu(menu), asc), menu);
-  asc = !asc;
 });
 
-const random = document.querySelector('#getRandom');
+// Create a timer that tells user to "hurry up" after 15 secs of browsing. The
+// notification should appear on the web page.
 
-const getRandomItem = (menu) => {
-  const index = Math.floor(Math.random() * menu.childNodes.length);
-  const randomItem = menu.childNodes[index];
-  return randomItem.textContent;
-};
+const timer = document.querySelector('#timer');
+setTimeout(() => timer.innerHTML = '15 seconds has passed', 15 * 1000);
 
-random.addEventListener('click', () => {
-  document.querySelector(
-    '#random').innerHTML = '<strong>Your random dish:</strong><br>' +
-    getRandomItem(menu);
-});
+// Create a timer that tells user to "hurry up" after 15 secs of idling (= not
+// doing anything: mouse hasn't been moving, keyboard keys haven't been
+// pressed...). The notification should appear on the web page.

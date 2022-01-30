@@ -1,25 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8"/>
   <title><%= htmlWebpackPlugin.options.title %></title>
   <link rel="stylesheet" href="assets/styles.css"/>
 </head>
 <body>
-<header>
-  <h1>Menu</h1>
-</header>
+<p>
+  Input <a href="https://en.wikipedia.org/wiki/Konami_Code">the Konami code</a>:<br>
+  up, up, down, down, left, right, left, right, B, A
+</p>
 
-<main>
-  <p id="controls">
-    <button id="changeLanguage">Change language</button>
-    <button id="sort">Sort</button>
-    <button id="getRandom">Random dish</button>
-  </p>
+<p id="coords">
+  Double click coordinates:<br>
+  <span></span>
+</p>
 
-  <ul id="menu"></ul>
+<p id="touch">
+  Touch only!
+</p>
 
-  <p id="random"></p>
-</main>
+<p id="timer">
+
+</p>
+
+<p id="idler">
+
+</p>
 </body>
 </html>
