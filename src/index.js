@@ -1,5 +1,5 @@
-import FazerData from './modules/FazerData';
-import SodexoData from './modules/SodexoData';
+import FazerData from './modules/fazer-data';
+import SodexoData from './modules/sodexo-data';
 
 import sodexoRaw from './sodexo.json';
 const sodexoMenu = sodexoRaw.courses;
@@ -17,6 +17,8 @@ const coursesEn = FazerData.FazerFormat(fazerEnMenu, 0);
 const coursesEn = SodexoData.sodexoFormat(sodexoMenu, 'en');
 const coursesFi = SodexoData.sodexoFormat(sodexoMenu, 'fi');
 */
+
+const menu = document.querySelector('#menu');
 
 const clearMenuList = (parent) => {
   while (parent.firstChild) {
