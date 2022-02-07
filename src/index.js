@@ -1,37 +1,6 @@
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js').
-      then(registration => {
-        console.log('SW registered: ', registration);
-      }).
-      catch(registrationError => {
-        console.log('SW registration failed: ', registrationError);
-      });
-  });
-}
-
-import FazerData from './modules/fazer-data';
-import SodexoData from './modules/sodexo-data';
-
-import sodexoRaw from './sodexo.json';
-
-const sodexoMenu = sodexoRaw.courses;
-
-import fazerFiRaw from './fazerFi.json';
-import fazerEnRaw from './fazerEn.json';
-
-const fazerFiMenu = fazerFiRaw.LunchMenus;
-const fazerEnMenu = fazerEnRaw.LunchMenus;
-
-const coursesFi = FazerData.FazerFormat(fazerFiMenu, 0);
-const coursesEn = FazerData.FazerFormat(fazerEnMenu, 0);
-
-/*
-const coursesEn = SodexoData.sodexoFormat(sodexoMenu, 'en');
-const coursesFi = SodexoData.sodexoFormat(sodexoMenu, 'fi');
-*/
-
-const menu = document.querySelector('#menu');
+import fazerFormat from './modules/fazer-data';
+import sodexoFormat from './modules/sodexo-data';
+import fetchData from './modules/network';
 
 const clearMenuList = (parent) => {
   while (parent.firstChild) {
@@ -49,21 +18,6 @@ const writeMenuList = (items, parent) => {
   }
 };
 
-writeMenuList(coursesEn, menu);
-
-const changeLanguage = document.querySelector('#changeLanguage');
-let currentLanguage = 'en';
-
-changeLanguage.addEventListener('click', () => {
-  if (currentLanguage === 'fi') {
-    currentLanguage = 'en';
-    writeMenuList(coursesEn, menu);
-  } else if (currentLanguage === 'en') {
-    currentLanguage = 'fi';
-    writeMenuList(coursesFi, menu);
-  }
-});
-
 const sortMenu = (menu, asc) => {
   if (asc) {
     return menu.sort((a, b) => {
@@ -76,9 +30,6 @@ const sortMenu = (menu, asc) => {
   }
 };
 
-const sort = document.querySelector('#sort');
-let asc = true;
-
 const getCurrentMenu = (menu) => {
   const array = [];
   for (const childNode of menu.childNodes) {
@@ -87,18 +38,56 @@ const getCurrentMenu = (menu) => {
   return array;
 };
 
-sort.addEventListener('click', () => {
-  writeMenuList(sortMenu(getCurrentMenu(menu), asc), menu);
-  asc = !asc;
-});
-
-const random = document.querySelector('#getRandom');
-
 const getRandomItem = (menu) => {
   const index = Math.floor(Math.random() * menu.childNodes.length);
   const randomItem = menu.childNodes[index];
   return randomItem.textContent;
 };
+
+const checkServiceWorker = () => {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js').
+        then(registration => {
+          console.log('SW registered: ', registration);
+        }).
+        catch(registrationError => {
+          console.log('SW registration failed: ', registrationError);
+        });
+    });
+  }
+};
+
+const fazerUrlFi = 'https://www.foodandco.fi/api/restaurant/menu/week?language=fi&restaurantPageId=270540&weekDate=2022-02-01';
+const menu = document.querySelector('#menu');
+const changeLanguage = document.querySelector('#changeLanguage');
+const sort = document.querySelector('#sort');
+const random = document.querySelector('#getRandom');
+let currentLanguage = 'fi';
+let asc = true;
+
+checkServiceWorker();
+
+fetchData(fazerUrlFi, true).then(data => {
+  const menuData = JSON.parse(data.contents);
+  const coursesFi = fazerFormat(menuData.LunchMenus, 0);
+  writeMenuList(coursesFi, menu);
+});
+
+changeLanguage.addEventListener('click', () => {
+  if (currentLanguage === 'fi') {
+    currentLanguage = 'en';
+    writeMenuList(coursesEn, menu);
+  } else if (currentLanguage === 'en') {
+    currentLanguage = 'fi';
+    writeMenuList(coursesFi, menu);
+  }
+});
+
+sort.addEventListener('click', () => {
+  writeMenuList(sortMenu(getCurrentMenu(menu), asc), menu);
+  asc = !asc;
+});
 
 random.addEventListener('click', () => {
   document.querySelector(

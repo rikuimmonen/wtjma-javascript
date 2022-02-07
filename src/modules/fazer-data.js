@@ -1,4 +1,4 @@
-const FazerFormat = (items, day) => {
+const fazerFormat = (items, day) => {
   const array = [];
   const daysMenu = items[day].SetMenus;
   for (let i = 0; i < daysMenu.length; i++) {
@@ -15,5 +15,4 @@ const FazerFormat = (items, day) => {
   return array;
 };
 
-const FazerData = {FazerFormat};
-export default FazerData;
+export default fazerFormat;

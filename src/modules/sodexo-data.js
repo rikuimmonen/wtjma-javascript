@@ -13,5 +13,4 @@ const sodexoFormat = (items, outputLang) => {
   }
 };
 
-const SodexoData = {sodexoFormat};
-export default SodexoData;
+export default sodexoFormat;
